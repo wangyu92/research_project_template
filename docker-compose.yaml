@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # --- Service #0: Trainer ---
+  devel:
+    container_name: project_trainer
+    build: ./services/trainer
+    command: bash
+    volumes:
+      - ./src/:/root/src/
+      - ./data/:/root/data/
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    privileged: true
+    network_mode: host
+    ipc: host
+  # --- Service #2: Jupyter ---
+  jupyter:
+    container_name: project_jupyter
+    build: ./services/jupyter
+    command: jupyter lab --ip=0.0.0.0 --port=8999 --no-browser --allow-root &
+    volumes:
+      - ./jupyter_notebooks/:/root/jupyter_notebooks
+    ports:
+      - 8999:8999
+    environment:
+      JUPYTER_TOKEN: password
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+  # --- Service #3: Tensorboard ---
+  tensorboard:
+    container_name: project_tensorboard
+    build: ./services/tensorboard
+    command: tensorboard --logdir=/root/data/saved --port=8998 > ./tensorboard.log
+    volumes:
+      - ./data/saved/:/root/data/saved
+    ports:
+      - 8998:8998
