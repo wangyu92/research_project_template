@@ -20,6 +20,8 @@ services:
               capabilities: [gpu]
     network_mode: host
     ipc: host
+    ports:
+      - 8892:22
   # --- Service #2: Jupyter ---
   jupyter:
     container_name: project_jupyter
