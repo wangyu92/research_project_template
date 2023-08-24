@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # --- Service #0: Trainer ---
@@ -15,8 +15,9 @@ services:
       resources:
         reservations:
           devices:
-            - capabilities: [gpu]
-    privileged: true
+            - driver: nvidia
+              # device_ids: ['7']
+              capabilities: [gpu]
     network_mode: host
     ipc: host
   # --- Service #2: Jupyter ---
