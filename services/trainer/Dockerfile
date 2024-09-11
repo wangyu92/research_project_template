@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:23.07-py3
+FROM nvcr.io/nvidia/pytorch:24.08-py3
 
 # set work directory
 WORKDIR /root/src
